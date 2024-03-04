@@ -22,18 +22,21 @@ public class ReportReader {
             if (scanner.hasNextLine()) {
                 scanner.nextLine(); // Skip the header line
             }
+            System.out.println("Enter the state (e.g., IL): ");
+            Scanner userInput = new Scanner(System.in);
+            String targetState = userInput.nextLine();
 
             int index = 0;
             while (scanner.hasNextLine()) {
             	// Splits lines from the CSV apart into their components
-                reports = reportSetup(reports, scanner, index);
+                reports = reportSetup(reports, scanner, index, targetState);
             }
         } 
 
         return reports;
     }
     // Creates and sets up individual reports.
-	private MyBinarySearchTree reportSetup(MyBinarySearchTree reports, Scanner scanner, int index) {
+	private MyBinarySearchTree reportSetup(MyBinarySearchTree reports, Scanner scanner, int index, String targetState) {
 		String line = scanner.nextLine();
 		String[] values = line.split(",");
 		String startTime = values[2];
@@ -44,9 +47,13 @@ public class ReportReader {
 		
 		Report report = new Report(startTime, county, state, date);
 		//add report to ArrayList
-		reports.insert(report);
+		if (report.getState().equals(targetState)) {
+			reports.insert(report);
+		}
+		
 		//return ArrayList
 		return reports;
+
 	}
 	
 	// Converts report values to double

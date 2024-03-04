@@ -39,6 +39,9 @@ public class MyBinarySearchTree {
         } else if (report.getStart_time().compareTo(root.report.getStart_time()) > 0) {
         	root.rightChildren++;
             root.right = insertRec(root.right, report);
+        } else if (report.getStart_time().compareTo(root.report.getStart_time()) == 0) {
+        	root.rightChildren++;
+            root.right = insertRec(root.right, report);
         }
 
         return root;
