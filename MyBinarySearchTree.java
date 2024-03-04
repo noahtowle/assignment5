@@ -79,5 +79,26 @@ public class MyBinarySearchTree {
             inorderRec(root.right);
         }
     }
+
+    //calculate the number of records, 
+        public int numberOfRecords() {
+            return calculateNumberOfRecordsRec(root);
+        }
+
+        //Recursive helper method to help calculate the number of records in BTS 
+        private int calculateNumberOfRecordsRec(TreeNode root) {
+            if (root == null) {
+                return 0;
+            }
+            
+           // finds the number of records in the subtree (left and right)
+            int leftCount = calculateNumberOfRecordsRec(root.left);
+            int rightCount = calculateNumberOfRecordsRec(root.right);
+
+            //add 1 for the current node, subtracting 2 to ignore two fields 
+            return leftCount + rightCount + 1 - 2;
+        
+    }
+
     
 }
