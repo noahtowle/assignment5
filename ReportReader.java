@@ -14,29 +14,25 @@ public class ReportReader {
         this.csvFilePath = csvFilePath;
     }
 
-    public MyBinarySearchTree readReports() throws FileNotFoundException, ParseException {
-    	MyBinarySearchTree reports = new MyBinarySearchTree();
+    public ArrayList<MyBinarySearchTree> readReports() throws FileNotFoundException, ParseException {
+    	ArrayList<MyBinarySearchTree> trees = new ArrayList<MyBinarySearchTree>();
 
         try (Scanner scanner = new Scanner(new File(csvFilePath))) {
             // Assuming the CSV file columns are in the order: Id, Severity, Start Time, End Time, Location, Temperature, Humidity, Visibility, Weather condition, Crossing, Sunrise/Sunset
             if (scanner.hasNextLine()) {
                 scanner.nextLine(); // Skip the header line
             }
-            System.out.println("Enter the state (e.g., IL): ");
-            Scanner userInput = new Scanner(System.in);
-            String targetState = userInput.nextLine();
-
             int index = 0;
             while (scanner.hasNextLine()) {
             	// Splits lines from the CSV apart into their components
-                reports = reportSetup(reports, scanner, index, targetState);
+                trees = reportSetup(scanner, index, trees) ;
             }
         } 
 
-        return reports;
+        return trees;
     }
     // Creates and sets up individual reports.
-	private MyBinarySearchTree reportSetup(MyBinarySearchTree reports, Scanner scanner, int index, String targetState) {
+	private ArrayList<MyBinarySearchTree> reportSetup(Scanner scanner, int index, ArrayList<MyBinarySearchTree> trees) {
 		String line = scanner.nextLine();
 		String[] values = line.split(",");
 		String startTime = values[2];
@@ -46,33 +42,31 @@ public class ReportReader {
 		String date = timeValues[0];
 		
 		Report report = new Report(startTime, county, state, date);
-		//add report to ArrayList
-		if (report.getState().equals(targetState)) {
+		
+		boolean insertStatus = true;
+		MyBinarySearchTree reports = new MyBinarySearchTree();
+		// Establishes a base binary tree
+		if (trees.size() == 0) {
 			reports.insert(report);
+			trees.add(reports);
 		}
 		
-		//return ArrayList
-		return reports;
+		//add report to Binary Tree
+		for (MyBinarySearchTree stateReports : trees) {
+			if (stateReports.searchState(report.getState())) {
+				stateReports.insert(report);
+				insertStatus = false;
+				break;
+			}
+		}
+		if(insertStatus) {
+			reports.insert(report);
+			trees.add(reports);
+		}
+		//return List of binary trees
+		return trees;
 
 	}
-	
-	// Converts report values to double
-    private double toDouble(String value) {
-        try {
-            return Double.parseDouble(value);
-        } catch (NumberFormatException e) {
-            return 0.0; // Handle the case where the conversion fails
-        }
-    }
-    
-    // Converts report values to int
-    private int toInt(String value) {
-        try {
-            return Integer.parseInt(value);
-        } catch (NumberFormatException e) {
-            return 0; // Handle the case where the conversion fails
-        }
-    }
     
 
 }
