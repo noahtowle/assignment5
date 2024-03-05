@@ -115,7 +115,7 @@ public class MyBinarySearchTree {
                 return 0;
             }
 
-           // finds the number of records in the subtree (left and right)
+            //finds the number of records in the subtree (left and right)
             int leftCount = calculateNumberOfRecordsRec(root.left, date);
             int rightCount = calculateNumberOfRecordsRec(root.right, date);
 

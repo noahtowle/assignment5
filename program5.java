@@ -25,17 +25,18 @@ public class program5 {
          
         countMethod(trees, targetState, targetDate);
         
-        recursiveMethod(trees, targetState);
+        recursiveMethod(trees, targetState, targetDate);
          
     }
 
-	private static void recursiveMethod(ArrayList<MyBinarySearchTree> trees, String targetState) {
+	private static void recursiveMethod(ArrayList<MyBinarySearchTree> trees, String targetState, String targetDate) {
 		long startTimer = System.currentTimeMillis();;
           for (MyBinarySearchTree stateReports : trees) {
          	 if (stateReports.searchState(targetState)) {
-         		//OTHER METHOD OUTPUT HERE
+         		int numRecords = stateReports.numberOfRecords(targetDate);
  				long endTimer = System.currentTimeMillis();
  				long elapsedTime = (endTimer - startTimer);
+ 				System.out.println(numRecords + " reports are available for " + targetState + " on and after the date " + targetDate);
  				System.out.println(elapsedTime + " milliseconds to calculate this using recursive method");
  				break;
  			}
