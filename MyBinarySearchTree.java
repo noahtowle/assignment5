@@ -119,8 +119,8 @@ public class MyBinarySearchTree {
             int leftCount = calculateNumberOfRecordsRec(root.left, date);
             int rightCount = calculateNumberOfRecordsRec(root.right, date);
 
-            //add 1 for the current node, subtracting 2 to ignore two fields 
-            return leftCount + rightCount + 1 - 2;
+            //add 1 for the current node
+            return leftCount + rightCount + 1 ;
 
     }
 
